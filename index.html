@@ -177,40 +177,10 @@
 
 
 
-        .mask-text {
-            font-family: "Michroma", sans-serif;
-            font-size: 20vw;
-            font-weight: 400;
-            letter-spacing: 0.05em;
-            background: linear-gradient(135deg,
-                    #0a6d78 0%,
-                    #28b7b0 35%,
-                    #ff9f6d 70%,
-                    #f08fb0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            opacity: 0.15;
-            animation: maskPulse 4s ease-in-out infinite;
-        }
-
-        @keyframes maskPulse {
-
-            0%,
-            100% {
-                opacity: 0.1;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 0.2;
-                transform: scale(1.02);
-            }
-        }
 
         /* ---------- STONEX SCROLL TRANSITION ---------- */
         .stonex-transition {
-            height: 200vh;
+            height: 100vh;
             background: #0a0a0a;
             position: relative;
         }
@@ -1018,6 +988,7 @@
 
     <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
     <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
@@ -1026,20 +997,37 @@
                 trigger: ".stonex-transition",
                 start: "top top",
                 end: "bottom top",
-                scrub: 1.4,
+                scrub: 2.2,          // heavier cinematic scroll feel
                 pin: true
             }
         })
+
+            // Phase 1 — dramatic zoom-out
+            .fromTo(".stonex-text",
+                { scale: 3.6, y: 0, opacity: 1 },
+                {
+                    scale: 0.55,
+                    y: -120,
+                    ease: "power4.out",
+                    duration: 1
+                }
+            )
+
+            // Phase 2 — slow upward drift (like your video)
             .to(".stonex-text", {
-                scale: 0.45,
-                y: -260,
-                ease: "power3.out"
+                y: -420,
+                ease: "power2.inOut",
+                duration: 1
             })
+
+            // Phase 3 — late fade (not early)
             .to(".stonex-text", {
                 opacity: 0,
-                ease: "power2.out"
+                ease: "power2.out",
+                duration: 0.6
             }, "-=0.25");
     </script>
+
 
 </body>
 
