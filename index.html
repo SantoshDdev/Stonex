@@ -1018,6 +1018,28 @@
 
     <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
     <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.timeline({
+            scrollTrigger: {
+                trigger: ".stonex-transition",
+                start: "top top",
+                end: "bottom top",
+                scrub: 1.4,
+                pin: true
+            }
+        })
+            .to(".stonex-text", {
+                scale: 0.45,
+                y: -260,
+                ease: "power3.out"
+            })
+            .to(".stonex-text", {
+                opacity: 0,
+                ease: "power2.out"
+            }, "-=0.25");
+    </script>
 
 </body>
 
