@@ -625,59 +625,131 @@
         }
 
         /* ---------- RESPONSIVE ---------- */
-        @media (max-width: 900px) {
-            .navbar {
-                padding: 20px;
-            }
+        html,
+        body {
+            overflow-x: hidden;
+            width: 100%;
+        }
 
-            .nav-links a:not(.nav-btn) {
-                display: none;
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 1200px) {
+            .navbar {
+                padding: 20px 24px;
             }
 
             .hero-text h1 {
-                font-size: 36px;
+                font-size: clamp(32px, 5vw, 44px);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .nav-links {
+                gap: 16px;
+                font-size: 13px;
+            }
+
+            .about-content {
+                gap: 40px;
+            }
+
+            .stonex-text {
+                font-size: 18vw;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            /* Try to keep nav links horizontal on tablets, wrap if needed */
+            .nav-links {
+                gap: 15px;
+            }
+
+            .hero {
+                padding-top: 140px;
                 text-align: center;
             }
 
-            .store-buttons {
-                position: static;
-                justify-content: center;
-                margin-top: 40px;
-                padding: 0 24px 60px;
+            .hero-text h1 {
+                font-size: clamp(28px, 6vw, 36px);
+                line-height: 1.4;
             }
 
-            .mask-text {
-                font-size: 25vw;
-            }
-
+            /* Stack sections vertically on tablets/mobile */
             .about-content {
                 grid-template-columns: 1fr;
                 text-align: center;
             }
 
-            .about-text .brand {
-                margin: 0 auto;
-            }
-
             .features {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
             }
 
             .explore-grid {
                 grid-template-columns: 1fr;
             }
 
-            .explore-card {
-                height: 300px;
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
             }
 
-            .explore-featured {
-                height: 400px;
+            .about-text .brand {
+                margin: 0 auto;
             }
 
-            .testimonial-card {
-                transform: none !important;
-                max-width: 100%;
+            .store-buttons {
+                position: static;
+                justify-content: center;
+                margin-top: 40px;
+            }
+
+            .stonex-text {
+                font-size: 20vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .nav-btn {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+
+            .hero-text h1 {
+                font-size: clamp(24px, 8vw, 32px);
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
             }
 
             .contact-form {
@@ -687,40 +759,6 @@
             .contact-form textarea,
             .contact-form button {
                 grid-column: span 1;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr 1fr;
-                gap: 40px;
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-                gap: 10px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .hero-text h1 {
-                font-size: 28px;
-            }
-
-            .section-title {
-                font-size: 36px;
-            }
-
-            .store-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .features {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -992,40 +1030,72 @@
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        gsap.timeline({
-            scrollTrigger: {
-                trigger: ".stonex-transition",
-                start: "top top",
-                end: "bottom top",
-                scrub: 2.2,          // heavier cinematic scroll feel
-                pin: true
-            }
-        })
+        let mm = gsap.matchMedia();
 
-            // Phase 1 — dramatic zoom-out
-            .fromTo(".stonex-text",
-                { scale: 3.6, y: 0, opacity: 1 },
-                {
-                    scale: 0.55,
-                    y: -120,
-                    ease: "power4.out",
-                    duration: 1
+        // Desktop
+        mm.add("(min-width: 801px)", () => {
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: ".stonex-transition",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 2.2,
+                    pin: true
                 }
-            )
-
-            // Phase 2 — slow upward drift (like your video)
-            .to(".stonex-text", {
-                y: -420,
-                ease: "power2.inOut",
-                duration: 1
             })
+                .fromTo(".stonex-text",
+                    { scale: 3.6, y: 0, opacity: 1 },
+                    {
+                        scale: 0.55,
+                        y: -120,
+                        ease: "power4.out",
+                        duration: 1
+                    }
+                )
+                .to(".stonex-text", {
+                    y: -420,
+                    ease: "power2.inOut",
+                    duration: 1
+                })
+                .to(".stonex-text", {
+                    opacity: 0,
+                    ease: "power2.out",
+                    duration: 0.6
+                }, "-=0.25");
+        });
 
-            // Phase 3 — late fade (not early)
-            .to(".stonex-text", {
-                opacity: 0,
-                ease: "power2.out",
-                duration: 0.6
-            }, "-=0.25");
+        // Mobile/Tablet
+        mm.add("(max-width: 800px)", () => {
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: ".stonex-transition",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 2.2,
+                    pin: true
+                }
+            })
+                // Use gentler scaling to prevent x-scroll overflow
+                .fromTo(".stonex-text",
+                    { scale: 2.0, y: 0, opacity: 1 },
+                    {
+                        scale: 0.8,
+                        y: -50,
+                        ease: "power4.out",
+                        duration: 1
+                    }
+                )
+                .to(".stonex-text", {
+                    y: -150,
+                    ease: "power2.inOut",
+                    duration: 1
+                })
+                .to(".stonex-text", {
+                    opacity: 0,
+                    ease: "power2.out",
+                    duration: 0.6
+                }, "-=0.25");
+        });
     </script>
 
 
