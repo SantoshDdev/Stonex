@@ -676,15 +676,52 @@
 
         @media (max-width: 768px) {
             .navbar {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 15px;
-                padding: 15px;
+                padding: 20px;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: nowrap;
             }
 
-            /* Try to keep nav links horizontal on tablets, wrap if needed */
+            .menu-toggle {
+                display: flex;
+                /* Show hamburger */
+                z-index: 1001;
+            }
+
             .nav-links {
-                gap: 15px;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #0a0a0a;
+                flex-direction: column;
+                padding: 40px 20px;
+                gap: 24px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+                transform: translateY(-20px);
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+                pointer-events: all;
+            }
+
+            .nav-links a {
+                display: block;
+                font-size: 18px;
+                text-align: center;
+            }
+
+            .nav-links a:not(.nav-btn) {
+                display: block;
             }
 
             .hero {
@@ -723,8 +760,10 @@
 
             .store-buttons {
                 position: static;
+                margin-top: 30px;
                 justify-content: center;
-                margin-top: 40px;
+                flex-direction: row;
+                padding: 0;
             }
 
             .stonex-text {
@@ -733,17 +772,7 @@
         }
 
         @media (max-width: 480px) {
-            .navbar {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .nav-links {
-                width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 12px;
-            }
+            /* Navbar inherits from 768px (hamburger menu) */
 
             .nav-btn {
                 padding: 8px 16px;
@@ -776,6 +805,12 @@
             .contact-form textarea,
             .contact-form button {
                 grid-column: span 1;
+            }
+
+            .store-buttons {
+                flex-direction: column;
+                gap: 16px;
+                align-items: center;
             }
         }
     </style>
