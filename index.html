@@ -179,27 +179,29 @@
 
 
         /* ---------- STONEX SCROLL TRANSITION ---------- */
-        .stonex-transition {
-            height: 100vh;
-            background: #0a0a0a;
-            position: relative;
+        .stonex-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: #000;
+            mix-blend-mode: multiply;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0;
+            /* Hidden by default, actuated by GSAP */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .stonex-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(1.5);
+            /* Position relative to overlay flex centering */
+            transform: scale(3.6);
+            /* Initial large scale */
             font-family: "Michroma", sans-serif;
             font-size: 20vw;
             letter-spacing: 0.08em;
-            background: linear-gradient(135deg,
-                    #0a6d78 0%,
-                    #28b7b0 35%,
-                    #ff9f6d 70%,
-                    #f08fb0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
+            font-weight: 900;
             will-change: transform, opacity;
         }
 
@@ -806,11 +808,9 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- STONEX TRANSITION SECTION -->
-    <section class="stonex-transition">
-        <div class="stonex-text">STONEX</div>
+        <div class="stonex-overlay">
+            <div class="stonex-text">STONEX</div>
+        </div>
     </section>
 
     <!-- ABOUT SECTION -->
@@ -1034,29 +1034,35 @@
 
         // Desktop
         mm.add("(min-width: 801px)", () => {
-            gsap.timeline({
+            const tl = gsap.timeline({
                 scrollTrigger: {
-                    trigger: ".stonex-transition",
+                    trigger: ".hero-wrapper",
                     start: "top top",
                     end: "bottom top",
-                    scrub: 2.2,
+                    scrub: true,
                     pin: true
                 }
-            })
+            });
+
+            // 1. Fade in the black overlay (mask) immediately
+            tl.to(".stonex-overlay", { opacity: 1, duration: 0.05 }, 0)
+
+                // 2. Animate the text scale/position simultaneously
                 .fromTo(".stonex-text",
-                    { scale: 3.6, y: 0, opacity: 1 },
+                    { scale: 3.6, y: 0 },
                     {
                         scale: 0.55,
                         y: -120,
                         ease: "power4.out",
                         duration: 1
-                    }
+                    }, 0
                 )
                 .to(".stonex-text", {
                     y: -420,
                     ease: "power2.inOut",
                     duration: 1
                 })
+                // 3. Fade out the text at the end to close the transition
                 .to(".stonex-text", {
                     opacity: 0,
                     ease: "power2.out",
@@ -1066,24 +1072,25 @@
 
         // Mobile/Tablet
         mm.add("(max-width: 800px)", () => {
-            gsap.timeline({
+            const tl = gsap.timeline({
                 scrollTrigger: {
-                    trigger: ".stonex-transition",
+                    trigger: ".hero-wrapper",
                     start: "top top",
                     end: "bottom top",
-                    scrub: 2.2,
+                    scrub: true,
                     pin: true
                 }
-            })
-                // Use gentler scaling to prevent x-scroll overflow
+            });
+
+            tl.to(".stonex-overlay", { opacity: 1, duration: 0.05 }, 0)
                 .fromTo(".stonex-text",
-                    { scale: 2.0, y: 0, opacity: 1 },
+                    { scale: 2.0, y: 0 },
                     {
                         scale: 0.8,
                         y: -50,
                         ease: "power4.out",
                         duration: 1
-                    }
+                    }, 0
                 )
                 .to(".stonex-text", {
                     y: -150,
